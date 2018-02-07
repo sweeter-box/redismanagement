@@ -23,83 +23,101 @@ public class Dao {
 	 * 将Id存在sortedset
 	 */
 	static Jedis JEDIS = DB.getJedis();
-	static final String STUDENT_ID_TABLE="studentid";
+	static final String STUDENT_ID_TABLE = "studentid";
+	//设置ID初值
+	static final String STUDENT_START_ID = "180001";
+	//存放最后一插入的ID，实现ID自增
+	static final String STUDENT_END_ID_KEY = "tempID";
+
 	/**
-	 * 批量删除key-value
+	 * 删除key-value
+	 * 
 	 * @param id
 	 * @return
 	 */
 	public boolean del(String id) {
-		if (JEDIS.zrem(STUDENT_ID_TABLE, id) == JEDIS.del(id))
+		if (JEDIS.del(id) == JEDIS.zrem(STUDENT_ID_TABLE, id))
 			return true;
 		return false;
 	}
 
-	
 	/**
 	 * 插入一条数据
+	 * 
 	 * @param id
 	 * @param infoMap
 	 * @return
 	 */
-	public boolean insertInfo(String id, Map<String, String> infoMap) {
+	public boolean insertInfo(Map<String, String> infoMap) {
 		int score = Integer.parseInt(infoMap.get("avgscore"));
-		// 设置事务必须同时成功或失败
-		if (JEDIS.hmset(id, infoMap).equals("OK")&&JEDIS.zadd(STUDENT_ID_TABLE, score, id) >0)
+		Long tempID = JEDIS.incr(STUDENT_END_ID_KEY);
+		String id;
+		if (tempID == 1L) {
+			id = "1800001";
+		} else {
+			id = tempID.toString();
+		}
+		if (JEDIS.hmset(id, infoMap).equals("OK") && JEDIS.zadd(STUDENT_ID_TABLE, score, id) > 0) {
+			JEDIS.set(STUDENT_END_ID_KEY, id);
 			return true;
+		}
 		return false;
 	}
 
-	
 	/**
 	 * 修改数据
+	 * 
 	 * @param id
 	 * @param infoMap
 	 * @return
 	 */
 	public boolean updateInfo(String id, Map<String, String> infoMap) {
-		
+
 		if (JEDIS.hmset(id, infoMap).equals("OK"))
 			return true;
 		return false;
 	}
 
 	/**
-	 * 查询一个Id的所有字段   查询一行数据
-	 * @param String id
+	 * 查询一个Id的所有字段 查询一行数据
+	 * 
+	 * @param String
+	 *            id
 	 * @return Map<String, String>
 	 */
 	public Map<String, String> getOneStudent(String id) {
 		Map<String, String> infoMap = JEDIS.hgetAll(id);
 		return infoMap;
 	}
+
 	/**
 	 * 
 	 * @return
 	 */
-	public List<Map<String,String>> getAllStudent() {
-		List<Map<String,String>> list = new LinkedList<>();
+	public List<Map<String, String>> getAllStudent() {
+		List<Map<String, String>> list = new LinkedList<>();
 		Set<String> idSet = JEDIS.zrangeByScore(STUDENT_ID_TABLE, 0, 150);
 		for (String id : idSet) {
 			Map<String, String> map = JEDIS.hgetAll(id);
-			map.put("id",id);
+			map.put("id", id);
 			list.add(map);
 		}
-		Collections.sort(list, new Comparator<Map<String,String>>() {  
+		Collections.sort(list, new Comparator<Map<String, String>>() {
 			@Override
 			public int compare(Map<String, String> o1, Map<String, String> o2) {
-				if(Integer.parseInt(o1.get("avgscore"))>Integer.parseInt(o2.get("avgscore")))
+				if (Integer.parseInt(o1.get("avgscore")) > Integer.parseInt(o2.get("avgscore")))
 					return -1;
 				return 1;
-			}  
-		}); 
-		System.out.println(list);
+			}
+		});
 		return list;
 	}
 
 	/**
 	 * 查询一个Id的某些字段
-	 * @param String id, String[] field
+	 * 
+	 * @param String
+	 *            id, String[] field
 	 * @return Map<String, String>
 	 */
 	public List<String> getMultInfo(String id, String[] field) {
@@ -118,9 +136,8 @@ public class Dao {
 		return property;
 	}
 
-	
 	public Long getIdCount() {
-		Long idcount = JEDIS.zcount(STUDENT_ID_TABLE, 1, 1);
+		Long idcount = JEDIS.zcount(STUDENT_ID_TABLE, 0, 150);
 		return idcount;
 	}
 	// hset 修改给定字段

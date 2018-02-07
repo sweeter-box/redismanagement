@@ -1,11 +1,7 @@
 package managment;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-
-import org.junit.Test;
-
 import com.biz.model.Student;
 import com.biz.service.StudentService;
 import com.biz.service.StudentServiceImpl;

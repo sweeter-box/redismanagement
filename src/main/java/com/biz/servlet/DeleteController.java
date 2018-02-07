@@ -23,16 +23,28 @@ import com.biz.service.StudentServiceImpl;
 @WebServlet("/deleteController")
 public class DeleteController extends HttpServlet{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3929506386311964886L;
+
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StudentService service = new StudentServiceImpl();
-		String flag ="0";
+		int pagenum;
+		String temp =request.getParameter("pagenum");
+		if(temp==null){
+			pagenum=1;
+		}else{
+			pagenum=Integer.parseInt(temp);					
+		}
+		int flag =1;
 		String id =request.getParameter("id");
 		if(id.length()>0 && id !=null && service.deleteStudent(id))
-			flag="1";
+			flag++;
 	
 		request.setAttribute("result", flag);
-		request.getRequestDispatcher("index").forward(request, response);
+		request.getRequestDispatcher("index?pagenum="+pagenum).forward(request, response);
 	
 	}
 

@@ -23,7 +23,6 @@ public class Util {
     public void del(byte [] key){  
         Jedis jedis = DB.getJedis();  
         jedis.del(key);  
-        DB.returnResource(jedis);  
     }  
     /** 
      * 通过key删除 
@@ -32,7 +31,6 @@ public class Util {
     public void del(String key){  
         Jedis jedis = DB.getJedis();  
         jedis.del(key);  
-        DB.returnResource(jedis);  
     }  
   
     /** 
@@ -45,7 +43,6 @@ public class Util {
         Jedis jedis = DB.getJedis();  
         jedis.set(key, value);  
         jedis.expire(key, liveTime);  
-        DB.returnResource(jedis);  
     }  
     /** 
      * 添加key value 并且设置存活时间 
@@ -57,7 +54,6 @@ public class Util {
         Jedis jedis = DB.getJedis();  
         jedis.set(key, value);  
         jedis.expire(key, liveTime);  
-        DB.returnResource(jedis);  
     }  
     /** 
      * 添加key value 
@@ -67,7 +63,6 @@ public class Util {
     public void set(String key,String value){  
         Jedis jedis = DB.getJedis();  
         jedis.set(key, value);  
-        DB.returnResource(jedis);  
     }  
     /**添加key value (字节)(序列化) 
      * @param key 
@@ -76,7 +71,6 @@ public class Util {
     public void set(byte [] key,byte [] value){  
         Jedis jedis = DB.getJedis();  
         jedis.set(key, value);  
-        DB.returnResource(jedis);  
     }  
     /** 
      * 获取redis value (String) 
@@ -86,7 +80,6 @@ public class Util {
     public String get(String key){  
         Jedis jedis = DB.getJedis();  
          String value = jedis.get(key);  
-         DB.returnResource(jedis);  
         return value;  
     }  
     /** 
@@ -97,7 +90,6 @@ public class Util {
     public byte[] get(byte [] key){  
         Jedis jedis = DB.getJedis();  
         byte[] value = jedis.get(key);  
-        DB.returnResource(jedis);  
         return value;  
     }  
   
@@ -109,7 +101,6 @@ public class Util {
     public Set<String> keys(String pattern){  
         Jedis jedis = DB.getJedis();  
         Set<String> value = jedis.keys(pattern);  
-        DB.returnResource(jedis);  
         return value;  
     }  
   
@@ -121,7 +112,6 @@ public class Util {
     public boolean exists(String key){  
         Jedis jedis = DB.getJedis();  
         boolean value = jedis.exists(key);  
-        DB.returnResource(jedis);  
         return value;  
     }  
       
@@ -134,13 +124,11 @@ public class Util {
     public void lpush(String key,String value){  
         Jedis jedis = DB.getJedis();  
         jedis.lpush(key, value);  
-        DB.returnResource(jedis);  
     }  
       
     public void rpush(String key,String value){  
         Jedis jedis = DB.getJedis();  
         jedis.rpush(key, value);  
-        DB.returnResource(jedis);  
     }  
       
     /** 
@@ -151,7 +139,6 @@ public class Util {
     public Long llen(String key){  
         Jedis jedis = DB.getJedis();  
         Long len = jedis.llen(key);  
-        DB.returnResource(jedis);  
         return len;  
     }  
       
@@ -164,21 +151,18 @@ public class Util {
     public String lindex(String key,Long index){  
         Jedis jedis = DB.getJedis();  
         String str = jedis.lindex(key, index);  
-        DB.returnResource(jedis);  
         return str;  
     }  
       
     public String lpop(String key){  
         Jedis jedis = DB.getJedis();  
         String str = jedis.lpop(key);  
-        DB.returnResource(jedis);  
         return str;  
     }  
       
     public List<String> lrange(String key,long start,long end){  
         Jedis jedis = DB.getJedis();  
         List<String> str = jedis.lrange(key, start, end);  
-        DB.returnResource(jedis);  
         return str;  
     }
     

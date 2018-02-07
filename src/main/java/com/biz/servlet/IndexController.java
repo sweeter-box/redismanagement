@@ -24,7 +24,7 @@ import com.biz.service.StudentServiceImpl;
 *@param     
 */
 @WebServlet("/index")
-public class Controller extends HttpServlet{
+public class IndexController extends HttpServlet{
 
 	/**
 	 * 
@@ -39,15 +39,15 @@ public class Controller extends HttpServlet{
 		if(temp==null){
 			pagenum=1;
 		}else{
-			pagenum=Integer.parseInt(temp);
-					
+			pagenum=Integer.parseInt(temp);					
 		}
 		
 		Pageutil<Map<String, String>> pu=new Pageutil<>();		
 		List<Map<String, String>>  studentList=pu.ListSplit(list,pagenum);
 		int pagesum=pu.getPagesum();
 		request.setAttribute("total", pu.getTotal());
-		request.setAttribute("pagesum", pagesum);
+		request.getSession().setAttribute("pagesum", pagesum);
+		request.getSession().setAttribute("pagenum", pagenum);
 		request.setAttribute("studentList", studentList);
 		request.getRequestDispatcher("info.jsp?pagesum="+pagesum).forward(request, response);
 	}

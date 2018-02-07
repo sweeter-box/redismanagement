@@ -42,7 +42,6 @@
 						<th>出生日期</th>
 						<th>平均分</th>
 						<th>备注</th>
-					
 						<th>操作</th>
 
 					</tr>
@@ -63,7 +62,7 @@
 								<div class="modal fade" id="myModal${student.id}" tabindex="-1"
 									role="dialog" aria-labelledby="myModalLabel">
 									<div class="modal-dialog">
-										<form action="updateController" method="post">
+										<form action="updateController?pagenum=${sessionScope.pagenum}" method="post">
 											<div class="modal-content">
 												<div class="modal-header">
 													<button data-dismiss="modal" class="close" type="button">
@@ -72,22 +71,22 @@
 													<h4 class="modal-title">信息修改</h4>
 												</div>
 												<div class="modal-body">
-													<p>${student.id}</p>
+													<p><strong>学号：${student.id}</strong></p>
 													<p>
 													<input type="hidden" name="id" value="${student.id}">
 													</p>
 													<p>
-														姓名:<input type="text" name="name" placeholder="${student.name}">
+														姓名:<input type="text" name="name" value="${student.name}">
 													</p>
 				
 													<p>
-														出生日期:<input type="text" name="birthday" placeholder="${student.birthday}">
+														出生日期:<input type="text" name="birthday" value="${student.birthday}">
 													</p>
 													<p>
-														平均分:<input type="text" name="avgscore" placeholder="${student.avgscore}">
+														平均分:<input type="text" name="avgscore" value="${student.avgscore}">
 													</p>
 													<p>
-														备注:<input type="text" name="description" placeholder="${student.description}">
+														备注:<input type="text" name="description" value="${student.description}">
 													</p>
 												</div>
 												<div class="modal-footer">
@@ -100,7 +99,7 @@
 									</div>
 								</div> 
 								
-								<a deletelink="true" href="deleteController?id=${student.id}">
+								<a deletelink="true" href="deleteController?id=${student.id}&pagenum=${sessionScope.pagenum}">
 								<button type="button" class="btn btn-default">删除</button></a>
 							</td>
 
@@ -114,8 +113,12 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button type="button" class="btn btn-default"
-								data-toggle="modal" data-target="#myModal">添加学生</button></td>
+						<td>
+						<button type="button" class="btn btn-default"
+								data-toggle="modal" data-target="#myModal">添加学生</button>
+								<button type="button" class="btn btn-default"
+								data-toggle="modal" data-target="#myModal">批量操作</button>
+								</td>
 				</tbody>
 			</table>
 		</div>
@@ -132,7 +135,7 @@ $("ul.pagination li.disabled a").click(function() {
 </script>
 
 
-<span>该产品共${total}条数据</span>
+<span>共${total}条数据</span>
 			
 
 <!---- 页码-- -->
@@ -157,14 +160,12 @@ $("ul.pagination li.disabled a").click(function() {
 			</nav>
 		</div>
 
-		
-
-<!-- 添加产品 -->
+<!-- 添加 -->
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog">
-			<form method="post" id="addForm" action="inserController">
+			<form method="post" id="addForm" action="insertController">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button data-dismiss="modal" class="close" type="button">
@@ -196,8 +197,6 @@ $("ul.pagination li.disabled a").click(function() {
 									<td><input id="description" name="description" type="text"
 										class="form-control"></td>
 								</tr>
-								
-
 							</tbody>
 						</table>
 					</div>

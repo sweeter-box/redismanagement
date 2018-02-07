@@ -25,12 +25,12 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean insertStudent(Student student) {
-		UUID uuid = UUID.randomUUID();
+		/*UUID uuid = UUID.randomUUID();
 		String uuID = uuid.toString().split("-")[0];
 		Date now = new Date();
 		SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
 		sf.format(now);
-		String id = "S" + sf.format(now) + uuID;
+		String id = "S" + sf.format(now) + uuID;*/
 		Map<String, String> map = new HashMap<>();
 		map.put("name", student.getName());
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -38,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
 		map.put("birthday", birthday);
 		map.put("description", student.getDescription());
 		map.put("avgscore", student.getAvgscore() + "");
-		if (dao.insertInfo(id, map))
+		if (dao.insertInfo(map))
 			return true;
 		return false;
 	}
