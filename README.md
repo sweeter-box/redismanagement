@@ -1,6 +1,6 @@
 # redismanagment
 学生信息存在hash表中，id为key,一个属性对应一个field和value
 
-再将id作为主键存到sortedSet中使id有固定不重复数据
+再将id作为主键存到sortedSet中使id数据固定不重复
 
 将最后一次添加的学生id存入string中利用incr方法实现id自增。
