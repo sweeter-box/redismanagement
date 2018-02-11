@@ -81,6 +81,7 @@
 				
 													<p>
 														出生日期:<input type="text" name="birthday" value="${student.birthday}">
+														<span>后期用日期表or option修改</span>
 													</p>
 													<p>
 														平均分:<input type="text" name="avgscore" value="${student.avgscore}">
@@ -116,8 +117,7 @@
 						<td>
 						<button type="button" class="btn btn-default"
 								data-toggle="modal" data-target="#myModal">添加学生</button>
-								<button type="button" class="btn btn-default"
-								data-toggle="modal" data-target="#myModal">批量操作</button>
+								<button type="button" class="btn btn-default">批量操作</button>
 								</td>
 				</tbody>
 			</table>
@@ -183,6 +183,7 @@ $("ul.pagination li.disabled a").click(function() {
 								</tr>
 								<tr>
 									<td>出生日期</td>
+									<span>后期用日期表or option修改</span>
 									<td><input id="birthday" name="birthday" type="text"
 										class="form-control"></td>
 								</tr>

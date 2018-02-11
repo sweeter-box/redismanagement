@@ -1,11 +1,12 @@
 package com.biz.service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+
 
 import org.json.JSONObject;
 
@@ -59,7 +60,17 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Map<String, String>> getAllStudent() {
-		return dao.getAllStudent();
+		List<Map<String, String>> allList =dao.getAllStudent();
+		//结果集按分数排序
+		Collections.sort(allList, new Comparator<Map<String, String>>() {
+			@Override
+			public int compare(Map<String, String> o1, Map<String, String> o2) {
+				if (Integer.parseInt(o1.get("avgscore")) > Integer.parseInt(o2.get("avgscore")))
+					return -1;
+				return 1;
+			}
+		});
+		return allList;
 	}
 
 	@Override

@@ -1,12 +1,9 @@
 package com.biz.dao;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import redis.clients.jedis.Jedis;
 
 /**
@@ -44,20 +41,20 @@ public class Dao {
 	/**
 	 * 插入一条数据
 	 * 
-	 * @param id
 	 * @param infoMap
 	 * @return
 	 */
 	public boolean insertInfo(Map<String, String> infoMap) {
 		int score = Integer.parseInt(infoMap.get("avgscore"));
+		//查出自增ID
 		Long tempID = JEDIS.incr(STUDENT_END_ID_KEY);
 		String id;
 		if (tempID == 1L) {
-			id = "1800001";
+			id =STUDENT_START_ID;
 		} else {
 			id = tempID.toString();
 		}
-		if (JEDIS.hmset(id, infoMap).equals("OK") && JEDIS.zadd(STUDENT_ID_TABLE, score, id) > 0) {
+		if (JEDIS.zadd(STUDENT_ID_TABLE, score, id) > 0 && JEDIS.hmset(id, infoMap).equals("OK")) {
 			JEDIS.set(STUDENT_END_ID_KEY, id);
 			return true;
 		}
@@ -91,8 +88,8 @@ public class Dao {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * 查出所有的student信息
+	 * @return  List<Map<String, String>> 
 	 */
 	public List<Map<String, String>> getAllStudent() {
 		List<Map<String, String>> list = new LinkedList<>();
@@ -102,14 +99,6 @@ public class Dao {
 			map.put("id", id);
 			list.add(map);
 		}
-		Collections.sort(list, new Comparator<Map<String, String>>() {
-			@Override
-			public int compare(Map<String, String> o1, Map<String, String> o2) {
-				if (Integer.parseInt(o1.get("avgscore")) > Integer.parseInt(o2.get("avgscore")))
-					return -1;
-				return 1;
-			}
-		});
 		return list;
 	}
 

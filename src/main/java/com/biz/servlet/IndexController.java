@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.biz.dao.Pageutil;
 import com.biz.service.StudentService;
 import com.biz.service.StudentServiceImpl;
+import com.biz.util.Pageutil;
 
 /**   
 * @version 1.0   

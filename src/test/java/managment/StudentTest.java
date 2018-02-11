@@ -27,7 +27,7 @@ public class StudentTest {
 		r.nextInt(150);
 	
 		Student s = new Student("1000", "Student"+i,date ,r.nextInt(150), "测");		
-		System.out.println(service.insertStudent(s));
+		//System.out.println(service.insertStudent(s));
 		}
 	}
 }

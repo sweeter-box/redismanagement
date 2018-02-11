@@ -1,4 +1,4 @@
-package com.biz.dao;
+package com.biz.util;
 
 
 import java.util.List;
@@ -51,7 +51,6 @@ public class Pageutil<E> {
 				pagenum=1;
 			if(pagenum>pagesum)
 				pagenum=pagesum;
-			
 	        newList=list.subList(rows*(pagenum-1), ((rows*pagenum)>total?total:(rows*pagenum)));  
 	        return newList;  
 	    }
